@@ -1,28 +1,21 @@
-#include "main.h"
-#include <fcntl.h>
-#include <unistd.h>
-#include <stdlib.h>
 #include <stdio.h>
-
-void close_fd(int fd);
-void copy_file(const char *file_from, const char *file_to);
+#include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
 
 /**
- * main - entry point
- * @argc: argument count
- * @argv: argument vector
- * Return: 0 on success
+ * close_fd - closes a file descriptor safely
+ * @fd: file descriptor to close
  */
-int main(int argc, char *argv[])
+void close_fd(int fd)
 {
-	if (argc != 3)
-	{
-		dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n");
-		exit(97);
-	}
+	int c = close(fd);
 
-	copy_file(argv[1], argv[2]);
-	return (0);
+	if (c == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd);
+		exit(100);
+	}
 }
 
 /**
@@ -50,10 +43,10 @@ void copy_file(const char *file_from, const char *file_to)
 		exit(99);
 	}
 
-	while ((r = read(fd_from, buf, sizeof(buf))) > 0)
+	while ((r = read(fd_from, buf, 1024)) > 0)
 	{
 		w = write(fd_to, buf, r);
-		if (w != r)
+		if (w == -1 || w != r)
 		{
 			dprintf(STDERR_FILENO, "Error: Can't write to %s\n", file_to);
 			close_fd(fd_from);
@@ -61,6 +54,7 @@ void copy_file(const char *file_from, const char *file_to)
 			exit(99);
 		}
 	}
+
 	if (r == -1)
 	{
 		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", file_from);
@@ -74,16 +68,20 @@ void copy_file(const char *file_from, const char *file_to)
 }
 
 /**
- * close_fd - closes a file descriptor safely
- * @fd: file descriptor to close
+ * main - entry point
+ * @argc: argument count
+ * @argv: argument vector
+ * Return: 0 on success
  */
-void close_fd(int fd)
+int main(int argc, char **argv)
 {
-	int c = close(fd);
-
-	if (c == -1)
+	if (argc != 3)
 	{
-		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd);
-		exit(100);
+		dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n");
+		exit(97);
 	}
+
+	copy_file(argv[1], argv[2]);
+	return (0);
 }
+
