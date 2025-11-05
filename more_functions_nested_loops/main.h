@@ -18,3 +18,4 @@ void print_square(int size);
 
 #endif /* MAIN_H */
 void print_diagonal(int n);
+void print_triangle(int size);
