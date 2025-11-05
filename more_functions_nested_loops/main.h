@@ -14,6 +14,7 @@ void more_numbers(void);
 
 /* Task 6 */
 void print_line(int n);
+void print_square(int size);
 
 #endif /* MAIN_H */
 void print_diagonal(int n);
