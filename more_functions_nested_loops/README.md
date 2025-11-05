@@ -1,3 +1,3 @@
 # More functions, more nested loops
-This project contains tasks that improve understanding of functions and nested loops in C.
-
+This directory contains tasks for practicing functions and nested loops in C.
+gcc -Wall -Werror -Wextra -pedantic -std=gnu89
