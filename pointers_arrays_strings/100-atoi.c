@@ -5,29 +5,41 @@
  * @s: pointer to the string
  *
  * Return: the integer value
+ *
+ * Note: Build as a negative number to handle INT_MIN safely.
  */
 int _atoi(char *s)
 {
 	int i = 0;
 	int sign = 1;
-	int result = 0;
 	int started = 0;
+	int result = 0; /* store as negative while parsing */
 
 	while (s[i] != '\0')
 	{
-		if (s[i] == '-')
-			sign *= -1;
-
-		if (s[i] >= '0' && s[i] <= '9')
+		if (!started)
 		{
-			result = (result * 10) + (s[i] - '0');
-			started = 1;
+			if (s[i] == '-')
+				sign = -sign;
+			else if (s[i] >= '0' && s[i] <= '9')
+			{
+				started = 1;
+				result = -(s[i] - '0'); /* start negative */
+			}
 		}
-		else if (started == 1)
-			break;
-
+		else
+		{
+			if (s[i] >= '0' && s[i] <= '9')
+				result = (result * 10) - (s[i] - '0'); /* stay negative */
+			else
+				break;
+		}
 		i++;
 	}
 
-	return (result * sign);
+	if (!started)
+		return (0);
+
+	/* if sign is positive, flip to positive; else keep negative */
+	return (sign > 0) ? -result : result;
 }
