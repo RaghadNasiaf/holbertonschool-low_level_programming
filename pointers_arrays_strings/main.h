@@ -2,6 +2,7 @@
 #define MAIN_H
 
 int _putchar(char c);
+int _strlen(char *s);
 
 /* Task 0 */
 void reset_to_98(int *n);
