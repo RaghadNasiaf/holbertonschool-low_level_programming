@@ -13,7 +13,7 @@ int _atoi(char *s)
 	int i = 0;
 	int sign = 1;
 	int started = 0;
-	int result = 0; /* store as negative while parsing */
+	int result = 0; /* keep negative while parsing */
 
 	while (s[i] != '\0')
 	{
@@ -40,6 +40,7 @@ int _atoi(char *s)
 	if (!started)
 		return (0);
 
-	/* if sign is positive, flip to positive; else keep negative */
-	return (sign > 0) ? -result : result;
+	if (sign > 0)
+		return (-result);
+	return (result);
 }
