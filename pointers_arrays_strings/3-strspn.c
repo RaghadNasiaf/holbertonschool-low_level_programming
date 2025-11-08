@@ -3,29 +3,30 @@
 /**
  * _strspn - gets the length of a prefix substring
  * @s: input string
- * @accept: string containing accepted characters
+ * @accept: accepted bytes
  *
- * Return: number of bytes in s that are in accept
+ * Return: number of bytes in the initial segment of s
+ *         which consist only of bytes from accept
  */
 unsigned int _strspn(char *s, char *accept)
 {
 	unsigned int i, j, count = 0;
-	int match;
+	int hit;
 
 	for (i = 0; s[i] != '\0'; i++)
 	{
-		match = 0;
+		hit = 0;
 		for (j = 0; accept[j] != '\0'; j++)
 		{
 			if (s[i] == accept[j])
 			{
-				match = 1;
-				count++;
+				hit = 1;
 				break;
 			}
 		}
-		if (match == 0)
+		if (!hit)
 			break;
+		count++;
 	}
 	return (count);
 }
